@@ -3,6 +3,8 @@ import { jsx } from "theme-ui"
 import gql from "graphql-tag"
 import { useSubscription } from "react-apollo-hooks"
 
+import CommentForm from "./commentForm"
+
 const GET_COMMENTS = gql`
   subscription($id: uuid!) {
     comments(where: { post_id: { _eq: $id } }) {
@@ -29,14 +31,15 @@ const Comments = ({ id }) => {
   }
 
   return (
-    <ul>
-      {data.comments.map((comment) => (
-        <li key={comment.id}>{comment.comment}</li>
-      ))}
-    </ul>
+    <div>
+      <ul>
+        {data.comments.map((comment) => (
+          <li key={comment.id}>{comment.comment}</li>
+        ))}
+      </ul>
+      <CommentForm id={id} />
+    </div>
   )
-
-  //   return <div>heloo</div>
 }
 
 export default Comments
