@@ -1,0 +1,27 @@
+{
+    "name": "blog_n_decker",
+    "version": "1.0.0",
+    "description": "A site that converts mdx-deck mdx files to blog posts",
+    "main": "index.js",
+    "scripts": {
+        "build": "gatsby build",
+        "develop": "gatsby develop",
+        "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+        "start": "npm run develop",
+        "serve": "gatsby serve",
+        "clean": "gatsby clean",
+        "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    },
+    "dependencies": {
+        "gatsby": "^2.21.9",
+        "gatsby-theme-deck-n-blog": "github:jgarrow/gatsby-theme-deck-n-blog#theme",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
+    },
+    "devDependencies": {
+        "prettier": "2.0.5"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT"
+}
