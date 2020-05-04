@@ -3,6 +3,7 @@ import { jsx } from "theme-ui"
 import gql from "graphql-tag"
 import { useSubscription } from "react-apollo-hooks"
 
+import Comment from "./comment"
 import CommentForm from "./commentForm"
 
 const GET_COMMENTS = gql`
@@ -32,9 +33,20 @@ const Comments = ({ id }) => {
 
   return (
     <div>
-      <ul>
-        {data.comments.map((comment) => (
-          <li key={comment.id}>{comment.comment}</li>
+      <ul
+        sx={{
+          display: `grid`,
+          gridTemplateColumns: `1fr`,
+          gridGap: `1rem`,
+        }}
+      >
+        {data.comments.map(({ id, comment, name, time_posted }) => (
+          <Comment
+            key={id}
+            comment={comment}
+            name={name}
+            time_posted={time_posted}
+          />
         ))}
       </ul>
       <CommentForm id={id} />

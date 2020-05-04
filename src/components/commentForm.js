@@ -47,6 +47,7 @@ const CommentForm = ({ id }) => {
             type="text"
             value={values.name}
             onChange={handleChange}
+            mb={3}
           />
           <Label htmlFor="comment">Comment</Label>
           <Textarea
@@ -54,7 +55,8 @@ const CommentForm = ({ id }) => {
             name="comment"
             value={values.comment}
             onChange={handleChange}
-            rows={10}
+            mb={3}
+            rows={5}
           />
           <Button type="submit">Submit</Button>
         </Form>
