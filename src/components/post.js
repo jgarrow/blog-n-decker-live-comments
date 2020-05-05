@@ -19,8 +19,6 @@ const Post = ({
   previous,
   next,
 }) => {
-  console.log("post: ", post)
-
   return (
     <Layout location={location} title={title}>
       <SEO title={post.title} description={post.excerpt} />

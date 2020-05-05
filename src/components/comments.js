@@ -25,18 +25,6 @@ const Comments = ({ id }) => {
     variables: { id },
   })
 
-  // useEffect(() => {
-  //   console.log("loading: ", loading)
-  //   let needToSetData = false
-
-  //   if (!loading && !dataIsSet) {
-  //     needToSetData = true
-  //   }
-
-  //   console.log("needToSetData: ", needToSetData)
-  //   setDataIsSet(needToSetData)
-  // }, [loading])
-
   if (loading) {
     return <p>Loading...</p>
   }
@@ -44,10 +32,6 @@ const Comments = ({ id }) => {
   if (error) {
     return <pre>{JSON.stringify(error, null, 2)}</pre>
   }
-
-  // useEffect(() => {
-  //   setDataIsSet(true)
-  // }, [loading])
 
   return (
     <div

@@ -4,8 +4,6 @@ import { jsx, useColorMode } from "theme-ui"
 const Comment = ({ comment, name, time_posted }) => {
   const [colorMode] = useColorMode()
 
-  //   console.log("colorMode: ", colorMode)
-
   const lightModeComment = {
     padding: `10px 25px`,
     listStyle: `none`,
@@ -23,7 +21,6 @@ const Comment = ({ comment, name, time_posted }) => {
     padding: `10px 25px`,
     listStyle: `none`,
     borderRadius: `12px`,
-    // border: (t) => `1px solid ${t.colors.primary}`,
     background: `rgba(0, 0, 0, 0.2)`,
   }
 
@@ -39,7 +36,6 @@ const Comment = ({ comment, name, time_posted }) => {
   const todayTime = todayDateObj.getTime()
 
   const timePostedDate = new Date(time_posted)
-  //   console.log("timePostedDate: ", timePostedDate)
 
   const timeDay = timePostedDate.getDate()
   const timeMonth = timePostedDate.getMonth()
@@ -58,8 +54,6 @@ const Comment = ({ comment, name, time_posted }) => {
       timeLabel = " hr ago"
     }
   }
-
-  //   console.log("time: ", time)
 
   const timeOutput = `${time}${timeLabel}`
 

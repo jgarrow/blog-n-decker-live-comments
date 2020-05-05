@@ -1,8 +1,10 @@
 /** @jsx jsx */
-import { jsx, Styled } from "theme-ui"
+import { jsx, Styled, useThemeUI } from "theme-ui"
 import { Fragment } from "react"
 
 export default ({ socialLinks }) => {
+  const { theme } = useThemeUI()
+  console.log(theme.breakpoints)
   return (
     <footer
       sx={{
