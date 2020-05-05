@@ -1,26 +1,70 @@
 /** @jsx jsx */
-import { jsx } from "theme-ui"
+import { jsx, useColorMode } from "theme-ui"
 
 const Comment = ({ comment, name, time_posted }) => {
-  // TODO: Add '1hr ago' feature -- needs more logic to show that instead of date if day is same as today
+  const [colorMode] = useColorMode()
+
+  //   console.log("colorMode: ", colorMode)
+
+  const lightModeComment = {
+    padding: `10px 25px`,
+    listStyle: `none`,
+    borderRadius: `12px`,
+    boxShadow: (t) => `0px 2px 4px ${t.colors.muted}`,
+  }
+
+  const lightModeTimeStamp = {
+    justifySelf: `flex-end`,
+    color: (t) => t.colors.muted,
+    textShadow: (t) => `0px 0px 1px ${t.colors.muted}`,
+  }
+
+  const darkModeComment = {
+    padding: `10px 25px`,
+    listStyle: `none`,
+    borderRadius: `12px`,
+    // border: (t) => `1px solid ${t.colors.primary}`,
+    background: `rgba(0, 0, 0, 0.2)`,
+  }
+
+  const darkModeTimeStamp = {
+    justifySelf: `flex-end`,
+    color: (t) => t.colors.primary,
+  }
+
+  // today's date is for the comment time stamp text
+  const today = Date.now()
+  const todayDateObj = new Date(today)
+  const todayDay = todayDateObj.getDate()
+  const todayTime = todayDateObj.getTime()
 
   const timePostedDate = new Date(time_posted)
+  //   console.log("timePostedDate: ", timePostedDate)
 
   const timeDay = timePostedDate.getDate()
   const timeMonth = timePostedDate.getMonth()
   const timeYear = timePostedDate.getFullYear()
+  const timeTime = timePostedDate.getTime()
 
-  const time = `${timeDay}/${timeMonth}/${timeYear}`
+  let timeLabel = "" // nothing if date, 'min ago' if minutes, 'hr ago' if hours
+  let time = `${timeMonth}/${timeDay}/${timeYear}`
+
+  if (timeDay === todayDay) {
+    time = Math.round((todayTime - timeTime) / (1000 * 60)) // minutes, rounded to whole number
+    timeLabel = " min ago"
+
+    if (time > 60) {
+      time = Math.round(time / 60) // hours, rounded to whole number
+      timeLabel = " hr ago"
+    }
+  }
+
+  //   console.log("time: ", time)
+
+  const timeOutput = `${time}${timeLabel}`
 
   return (
-    <li
-      sx={{
-        padding: `10px 20px`,
-        listStyle: `none`,
-        borderRadius: `12px`,
-        boxShadow: (t) => `0px 3px 9px ${t.colors.muted}`,
-      }}
-    >
+    <li sx={colorMode === "dark" ? darkModeComment : lightModeComment}>
       <div
         sx={{
           display: `grid`,
@@ -29,16 +73,26 @@ const Comment = ({ comment, name, time_posted }) => {
           alignItems: `center`,
         }}
       >
-        <p>{name}</p>
-        <small
+        <p
           sx={{
-            justifySelf: `flex-end`,
+            fontWeight: `600`,
           }}
         >
-          {time}
-        </small>
+          {name}
+        </p>
+        <p sx={colorMode === "dark" ? darkModeTimeStamp : lightModeTimeStamp}>
+          {timeOutput}
+        </p>
       </div>
-      <p>{comment}</p>
+      <p
+        sx={{
+          boxSizing: `border-box`,
+          width: `100%`,
+          paddingLeft: `15px`,
+        }}
+      >
+        {comment}
+      </p>
     </li>
   )
 }

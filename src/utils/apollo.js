@@ -13,7 +13,7 @@ import ws from "ws"
 const http = new HttpLink({
   uri: "https://blog-n-decker-comments.herokuapp.com/v1/graphql",
   headers: {
-    "x-hasura-admin-secret": process.env.GATSBY_HASURA_GRAPHQL_ADMIN_SECRET,
+    "x-hasura-role": "commenter",
   },
   fetch,
 })
@@ -26,7 +26,7 @@ const wsClient = new SubscriptionClient(
     reconnect: true,
     connectionParams: () => ({
       headers: {
-        "x-hasura-admin-secret": process.env.GATSBY_HASURA_GRAPHQL_ADMIN_SECRET,
+        "x-hasura-role": "commenter",
       },
     }),
   },
