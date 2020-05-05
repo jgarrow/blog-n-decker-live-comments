@@ -2,6 +2,10 @@
     "name": "blog_n_decker",
     "version": "1.0.0",
     "description": "A site that converts mdx-deck mdx files to blog posts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jgarrow/blog-n-decker.git"
+    },
     "main": "index.js",
     "scripts": {
         "build": "gatsby build",

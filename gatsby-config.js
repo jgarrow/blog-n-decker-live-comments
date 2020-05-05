@@ -10,7 +10,7 @@ module.exports = {
       },
       {
         name: `github`,
-        url: `https://github.com/jgarrow/gatsby-theme-deck-n-blog`,
+        url: `https://github.com/jgarrow`,
       },
     ],
   },

@@ -1,6 +1,5 @@
 /** @jsx jsx */
-import { jsx, Styled, useThemeUI } from "theme-ui"
-import { Fragment } from "react"
+import { jsx, useThemeUI } from "theme-ui"
 
 export default ({ socialLinks }) => {
   const { theme } = useThemeUI()

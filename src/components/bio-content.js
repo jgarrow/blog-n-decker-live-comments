@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx, Styled } from "theme-ui"
-import React from "react"
 
 export default () => (
   <>
