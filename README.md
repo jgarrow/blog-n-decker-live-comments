@@ -1,5 +1,7 @@
 # Blog 'n' Decker with live comments
 
+Live demo: https://blog-n-decker.netlify.app/
+
 ## Description
 
 This site was built using [my fork](https://github.com/jgarrow/gatsby-theme-deck-n-blog) of [Rodrigo Pombo's `gatsby-theme-deck-n-blog`](https://github.com/pomber/gatsby-theme-deck-n-blog). You write 1 `.mdx` file and it creates a slide deck and a blog post.
