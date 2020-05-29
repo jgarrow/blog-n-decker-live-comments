@@ -22,7 +22,6 @@ const Post = ({
   return (
     <Layout location={location} title={title}>
       <SEO title={post.title} description={post.excerpt} />
-      {/* <Comments id={post.id} /> */}
       <main>
         <Styled.h1>{post.title}</Styled.h1>
         <Styled.p

@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Blog 'n' Decker`,
     author: `Janessa Garrow`,
-    description: `Blog posts to accompany slides used for lessons and presentations`,
+    description: `Blog posts to accompany slides used for lessons and presentations with live comments`,
     social: [
       {
         name: `twitter`,

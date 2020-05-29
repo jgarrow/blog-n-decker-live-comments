@@ -1,9 +1,7 @@
 /** @jsx jsx */
-import { jsx, useThemeUI } from "theme-ui"
+import { jsx, Styled } from "theme-ui"
 
 export default ({ socialLinks }) => {
-  const { theme } = useThemeUI()
-  console.log(theme.breakpoints)
   return (
     <footer
       sx={{
@@ -12,13 +10,13 @@ export default ({ socialLinks }) => {
         alignItems: `center`,
       }}
     >
-      <p>
+      {/* <p>
         Made with{" "}
         <span role="img" aria-label="purple heart">
           💜
         </span>
-      </p>
-      {/* <p>© {new Date().getFullYear()}</p>
+      </p> */}
+      <p>© {new Date().getFullYear()}</p>
       {socialLinks &&
         socialLinks.map((platform, i, arr) => (
           <Styled.a
@@ -29,7 +27,7 @@ export default ({ socialLinks }) => {
           >
             {platform.name}
           </Styled.a>
-        ))} */}
+        ))}
     </footer>
   )
 }

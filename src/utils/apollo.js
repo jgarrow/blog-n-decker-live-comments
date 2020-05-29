@@ -11,9 +11,9 @@ import { getMainDefinition } from "apollo-utilities"
 import ws from "ws"
 
 const http = new HttpLink({
-  uri: "https://blog-n-decker-comments.herokuapp.com/v1/graphql",
+  uri: "https://blog-n-decker-comments-demo.herokuapp.com/v1/graphql",
   headers: {
-    "x-hasura-role": "commenter",
+    "x-hasura-role": "public",
   },
   fetch,
 })
@@ -21,12 +21,12 @@ const http = new HttpLink({
 const wsForNode = typeof window === "undefined" ? ws : null
 
 const wsClient = new SubscriptionClient(
-  "wss://blog-n-decker-comments.herokuapp.com/v1/graphql",
+  "wss://blog-n-decker-comments-demo.herokuapp.com/v1/graphql",
   {
     reconnect: true,
     connectionParams: () => ({
       headers: {
-        "x-hasura-role": "commenter",
+        "x-hasura-role": "public",
       },
     }),
   },
