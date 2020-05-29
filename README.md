@@ -71,4 +71,6 @@ The `Intro` and `Content` components' content will only appear in the blog post,
 
 The value given to `Zoom` determines how "zoomed in" that slide is on the blog post, with a default value of 1. This is handy if you have larger chunks of text on a slide that overflow in the smaller version of the slide deck embedded in the blog post. `Zoom` only affects the slide that it is in, so you can have different `Zoom` values for each slide.
 
+\**Note: there must be at least 2 `.mdx` decks in order for the site to compile
+
 See the [MDX Deck docs](https://github.com/jxnblk/mdx-deck) to see what other options and components are available.
