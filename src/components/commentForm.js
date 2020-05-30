@@ -4,7 +4,7 @@ import { alpha, darken } from "@theme-ui/color"
 import gql from "graphql-tag"
 import { Input, Label, Textarea, Button } from "@theme-ui/components"
 import ReCAPTCHA from "react-google-recaptcha"
-import { createRef, useState, useEffect } from "react"
+import { useRef, useState } from "react"
 
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
@@ -40,7 +40,7 @@ const CommentForm = ({ id }) => {
     expired: false,
     isChecked: false,
   })
-  const recaptchaRef = createRef(null)
+  const recaptchaRef = useRef(null)
   const [colorMode] = useColorMode()
 
   const darkModeForm = {
@@ -145,7 +145,16 @@ const CommentForm = ({ id }) => {
       }
     }
 
-    setRecaptchaState({ ...recaptchaState, isChecked: errorIsDisplayed })
+    setRecaptchaState({
+      callback: "not fired",
+      value: null,
+      expired: true,
+      isChecked: errorIsDisplayed,
+    })
+
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset()
+    }
   }
 
   return (
