@@ -38,7 +38,7 @@ const Comment = ({ comment, name, time_posted }) => {
   const timePostedDate = new Date(time_posted)
 
   const timeDay = timePostedDate.getDate()
-  const timeMonth = timePostedDate.getMonth()
+  const timeMonth = timePostedDate.getMonth() + 1 // January starts at 0
   const timeYear = timePostedDate.getFullYear()
   const timeTime = timePostedDate.getTime()
 
