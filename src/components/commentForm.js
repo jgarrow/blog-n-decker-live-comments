@@ -3,6 +3,8 @@ import { jsx, useColorMode } from "theme-ui"
 import { alpha, darken } from "@theme-ui/color"
 import gql from "graphql-tag"
 import { Input, Label, Textarea, Button } from "@theme-ui/components"
+import ReCAPTCHA from "react-google-recaptcha"
+import { createRef, useState, useEffect } from "react"
 
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
@@ -32,6 +34,13 @@ const CommentSchema = Yup.object().shape({
 })
 
 const CommentForm = ({ id }) => {
+  const [recaptchaState, setRecaptchaState] = useState({
+    callback: "not fired",
+    value: null,
+    expired: false,
+    isChecked: false,
+  })
+  const recaptchaRef = createRef(null)
   const [colorMode] = useColorMode()
 
   const darkModeForm = {
@@ -43,9 +52,41 @@ const CommentForm = ({ id }) => {
   }
 
   const darkModeButton = {
+    bg: !recaptchaState.isChecked
+      ? `rgba(0, 0, 0, 0.2)`
+      : (t) => `${t.colors.primary}`,
+    color: !recaptchaState.isChecked
+      ? `rgba(82, 82, 82, 1)`
+      : (t) => `${t.colors.text}`,
+
     ":hover": {
-      bg: (t) => darken(`${t.colors.primary}`, 0.05),
-      color: (t) => `${t.colors.text}`,
+      bg: !recaptchaState.isChecked
+        ? `rgba(0, 0, 0, 0.2)`
+        : (t) => darken(`${t.colors.primary}`, 0.05),
+      color: !recaptchaState.isChecked
+        ? `rgba(82, 82, 82, 1)`
+        : (t) => `${t.colors.text}`,
+      border: !recaptchaState.isChecked
+        ? `1px solid rgba(0, 0, 0, 0.2)`
+        : (t) => `1px solid ${t.colors.primary}`,
+    },
+  }
+
+  const lightModeButton = {
+    bg: !recaptchaState.isChecked
+      ? `rgba(102, 51, 153, 0.25)`
+      : (t) => `${t.colors.primary}`,
+
+    ":hover": {
+      bg: !recaptchaState.isChecked
+        ? `rgba(102, 51, 153, 0.25)`
+        : (t) => alpha(`${t.colors.primary}`, 0.05),
+      color: !recaptchaState.isChecked
+        ? (t) => `${t.colors.background}`
+        : (t) => `${t.colors.primary}`,
+      border: !recaptchaState.isChecked
+        ? `1px solid transparent`
+        : (t) => `1px solid ${t.colors.primary}`,
     },
   }
 
@@ -59,16 +100,52 @@ const CommentForm = ({ id }) => {
     comment: "",
   }
 
-  const handleSubmit = (values, { resetForm }) => {
-    addComment({
-      variables: {
-        name: values.name,
-        comment: values.comment,
-        post_id: id,
-      },
-    })
+  const asyncScriptOnLoad = () => {
+    setRecaptchaState({ ...recaptchaState, callback: "called!" })
+  }
 
-    resetForm({})
+  const handleRecaptchaChange = (recaptchaValue) => {
+    let isExpired = false
+    let checked = false
+    if (recaptchaValue === null) {
+      isExpired = true
+    } else {
+      checked = true
+    }
+
+    setRecaptchaState({
+      ...recaptchaState,
+      value: recaptchaValue,
+      expired: isExpired,
+      isChecked: checked,
+    })
+  }
+
+  const handleSubmit = (values, { resetForm }) => {
+    let recaptchaValue
+    let errorIsDisplayed
+
+    if (recaptchaRef.current) {
+      recaptchaValue = recaptchaRef.current.getValue()
+
+      if (recaptchaValue !== "") {
+        errorIsDisplayed = false
+
+        addComment({
+          variables: {
+            name: values.name,
+            comment: values.comment,
+            post_id: id,
+          },
+        })
+
+        resetForm({})
+      } else {
+        errorIsDisplayed = true
+      }
+    }
+
+    setRecaptchaState({ ...recaptchaState, isChecked: errorIsDisplayed })
   }
 
   return (
@@ -78,7 +155,14 @@ const CommentForm = ({ id }) => {
       onSubmit={handleSubmit}
     >
       {({ values, handleChange, errors, touched }) => (
-        <Form>
+        <Form
+          sx={{
+            display: `flex`,
+            flexDirection: `column`,
+            alignItems: `center`,
+            justifyContent: `space-evenly`,
+          }}
+        >
           <Label htmlFor="name">Name</Label>
           <Input
             id="name"
@@ -109,9 +193,21 @@ const CommentForm = ({ id }) => {
               {errors.comment}
             </p>
           ) : null}
+          <ReCAPTCHA
+            style={{ display: "inline-block" }}
+            ref={recaptchaRef}
+            sitekey={process.env.GATSBY_RECAPTCHA_SITE_KEY}
+            onChange={handleRecaptchaChange}
+            asyncScriptOnLoad={asyncScriptOnLoad}
+            sx={{
+              alignSelf: `flex-start`,
+              marginBottom: `28px`,
+            }}
+          />
           <Button
+            disabled={!recaptchaState.isChecked}
             type="submit"
-            sx={colorMode === "dark" ? darkModeButton : null}
+            sx={colorMode === "dark" ? darkModeButton : lightModeButton}
           >
             Submit
           </Button>
