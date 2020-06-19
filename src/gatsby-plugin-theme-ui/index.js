@@ -13,6 +13,13 @@ export default {
       },
     },
   },
+  styles: {
+    ...theme.styles,
+    Slide: {
+      fontFamily: 'body',
+      fontSize: [2, 3, 4, 5],
+    },
+  },
   forms: {
     input: {
       padding: `5px 10px`,
