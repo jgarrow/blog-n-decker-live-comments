@@ -1,0 +1,381 @@
+---
+title: Intro to Theme UI
+date: 2020-06-18
+---
+
+import { Intro, Content, Zoom } from "gatsby-theme-deck-n-blog"
+import { notes } from "@mdx-deck/themes"
+
+export const theme = notes
+
+<Intro>
+
+An overview of the basics of Theme UI, a "design graph framework". Find the official docs [here](https://theme-ui.com/getting-started).
+
+This post assumes a basic knowledge of CSS and React. Familiarity with Styled Components is helpful.
+
+</Intro>
+
+# Intro to Theme UI
+
+<Content>
+
+At its core, Theme UI lets you create a "theme", an object that contains all of the styles that you want to be consistent across your application. You can then use those theme styles throughout your UI. Let's take a closer look.
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Create your theme</h1>
+    <pre>
+        <code>
+            export default {
+                colors: {
+                    text: '#000',
+                    background: '#fff',
+                    primary: 'tomato',
+                },
+                fonts: {
+                    body: 'system-ui, sans-serif',
+                    heading: '"Avenir Next", sans-serif',
+                },
+            }
+        </code>
+    </pre>
+</div>
+
+<Content>
+
+## Create your theme
+
+After installing Theme UI by running `npm i theme-ui`, create your theme file with the styles you want to be part of your application's theme. This will be an object that follows some standard "Theme Specification" rules.
+
+To speed up the process and get up and running, you can use some [pre-made themes](https://theme-ui.com/packages/presets/) or use the [Theme UI GUI](https://theme-ui.com/customize) to create your own basic theme and copy and paste the code snippet from that.
+
+There are a LOT of theming options, so we won't go into detail about what they all are here. You can check it out in the [docs](https://theme-ui.com/theme-spec).
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Wrap the App in a <code>ThemeProvider</code></h1>
+    <pre>
+        <code>
+            // App.js
+            import React from 'react'
+            import { ThemeProvider } from 'theme-ui'
+            import theme from './theme' // your theme
+
+            export default props => (
+            <ThemeProvider theme={theme}>
+                {props.children}
+            </ThemeProvider>
+
+            )
+        </code>
+    </pre>
+
+</div>
+
+<Content>
+
+## `ThemeProvider`
+
+Now that we've created our theme, we need to give all of our components access to it. We can do this by wrapping our `App` in a `ThemeProvider`. If you're familiar with React's Context API, this will look familiar. We can import our theme and pass it in as the value for the `ThemeProvider` `theme` prop. Now every component nested inside of our `ThemeProvider` can access our theme styles!
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>The <code>sx</code> prop</h1>
+    <pre>
+        <code>
+            /** @jsx jsx */
+            import { jsx } from 'theme-ui'
+
+            export default props => (
+            <div
+                {...props}
+                sx={{
+                // values referencing scales defined in a theme
+                color: 'primary',
+                bg: 'background',
+                fontFamily: 'body',
+                // raw CSS value
+                boxShadow: '0 0 1px 3px rgba(0, 0, 0, .125)',
+                }}
+            />
+            )
+        </code>
+    </pre>
+
+</div>
+
+<Content>
+
+## The `sx` prop
+
+In order to access the styles from your theme inside of your components, you have to import `jsx` from Theme UI. Note: you MUST include the `/** @jsx jsx */` comment at the very top above the actual import, otherwise it will break.
+
+When import `jsx`, you don't need to import `React` from 'react' since both are using jsx. You can save yourself an extra import :)
+
+Within your jsx tags, you can use Theme UI's `sx` prop in place of `style` or `css`. This allows you to access the styles from your theme while still being able to use the normal functionality of `style`/`css`! In our example here, we're accessing the `primary` and `background` color values found in our theme file, but then using raw CSS for the value for the box shadow.
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Components</h1>
+    <pre>
+        <code>
+            /** @jsx jsx */
+            import { jsx } from 'theme-ui'
+            import { Button } from 'theme-ui'
+
+            export default props => (
+                <div>
+                    <Button mr={2}>Beep</Button>
+                    <Button variant='secondary'>Boop</Button>
+                </div>
+            )
+        </code>
+    </pre>
+
+</div>
+
+<Content>
+
+## Theme UI Components
+
+Theme UI comes with some [built-in components](https://theme-ui.com/components) that conveniently have some default styling. This is particularly useful if you want to bootstrap a project and have some basic styling right out of the box.
+
+In this example, we are using Theme UI's `Button` component. Theme UI components have a default "variant", which in the case of `Button` is called "primary". In many cases, there are other built-in variants (such as "secondary" for the `Button` component). A `variant` is simply that: a variant of a particular component that has some styling differences. If you don't pass in a variant to your component, it will have the default stylings.
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Variants</h1>
+    <pre>
+        <code>
+            export default {
+                ... // rest of your theme
+                buttons: { // Button component overrides
+                    primary: {
+                        color: 'background',
+                        bg: 'primary',
+                        '&:hover': {
+                            bg: 'text',
+                        }
+                    },
+                    secondary: {
+                        color: 'background',
+                        bg: 'secondary',
+                    },
+                },
+            }
+        </code>
+    </pre>
+
+</div>
+
+<Content>
+
+## Custom Component variants
+
+What if you want to customize or override any of the stylings that come with the Theme UI components?
+
+Using the `Button` example from the previous slide, we can customize both the `primary` and `secondary` variant stylings to fit our particular theme. In the [Theme UI docs](https://theme-ui.com/components/variants) for "Component Variants", we find a list of all of the available components, their "variant group", and the name of their "default variant". For the `Button` component, the "variant group" is called `buttons`. So in our theme file, we can create a key called `buttons`. For its value, we create an object whose keys are the names of the variants we want to style. Then in our components, wherever we use the default `primary` variant for `Button`, it will use our color, background, and hover stylings from our theme over those same stylings that come from Theme UI by default. Likewise with wherever we use the `secondary` variant for `Button`.
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Media Queries</h1>
+    <pre>
+        <code>
+            /** @jsx jsx */
+            import { jsx } from 'theme-ui'
+
+            export default props => (
+                <div
+                    {...props}
+                    sx={{
+                        width: ['100%', '50%', '25%']
+                    }}
+                />
+            )
+        </code>
+    </pre>
+
+</div>
+
+<Content>
+
+## Media Queries
+
+Theme UI includes a shorthand syntax for mobile-first responsive styles so that you don't have to hard code media queries. In your theme, you can create a `breakpoints` array whose values are the screen widths at which you want your media query breakpoints. Then, in your component styling within the `sx` prop, you can set the value of a style to an array. Each index within that array corresponds with the same index of the `breakpoints` array in your theme. In this example, the width of this div will be 100% for the first breakpoint value, then 50% for the second, and 25% for the third.
+
+If you need to skip a breakpoint, you can simply pass in a `null` value for that breakpoint value's index. This can be useful if you want to set a value for only the largest breakpoint.
+
+```js
+/** @jsx jsx */
+import { jsx } from "theme-ui"
+
+export default (props) => (
+  <div
+    {...props}
+    sx={{
+      width: [null, null, "25%"],
+    }}
+  />
+)
+```
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Color Modes</h1>
+    <pre>
+        <code>
+            // example theme colors
+            {
+                colors: {
+                    text: '#000',
+                    background: '#fff',
+                    primary: '#07c',
+                    modes: {
+                        dark: {
+                            text: '#fff',
+                            background: '#000',
+                            primary: '#0cf',
+                        }
+                    }
+                }
+            }
+        </code>
+    </pre>
+</div>
+
+<Content>
+
+## Color modes
+
+Dark mode is all the rage these days and with Theme UI, it's easier than ever. Within your theme, under `colors` you can create your default "light mode" colors. Then you can create a `modes` object. The names of the keys inside of `modes` will be the names of the different color modes that you want. In this example, we created a `dark` mode. When the color mode changes in our application, Theme UI is smart enough that it knows which values to look at. Anywhere where a color is set to the theme's `primary` color, it knows which one to look at based on what color mode you are in.
+
+</Content>
+
+---
+
+<div style={{
+    display: `flex`,
+    flexDirection: `column`,
+    alignItems: `center`,
+    justifyContent: `space-evenly`,
+    width: `100%`,
+    height: `100%`
+}}>
+    <h1>Toggling Color Modes</h1>
+    <pre>
+        <code>
+            /** @jsx jsx */
+            import { jsx } from 'theme-ui'
+            import { useColorMode } from 'theme-ui'
+
+            export default props => {
+                const [colorMode, setColorMode] = useColorMode()
+
+                return (
+                    <header>
+                        <button
+                            onClick={e => {
+                                setColorMode(colorMode === 'default' ? 'dark' : 'default')
+                            }}>
+                            Toggle {colorMode === 'default' ? 'Dark' : 'Light'}
+                        </button>
+                    </header>
+                )
+            }
+        </code>
+    </pre>
+
+</div>
+
+<Content>
+
+## Toggling Color modes
+
+Now that we have our color mode colors set up in our theme, let's actually toggle them. Theme UI has a `useColorMode` hook built in that we can use instead of having to make our own custom hooks.
+
+In this example, we can use the `useColorMode` hook to set the color mode in the button's `onClick` event. In this case, we're toggling back and forth between the `default` or light mode colors and `dark` mode colors. You can change the names of the modes to be the name of whatever color modes you created in your theme.
+
+</Content>
+
+---
+
+## [https://theme-ui.com/getting-started](https://theme-ui.com/getting-started)
+
+<Content>
+
+There is still more to learn and discuss about Theme UI. You can look at margin and padding, functional values, `Styled`, etc, but this should be enough to get you up and running with Theme UI!
+
+And as always, take a peek at the [docs](https://theme-ui.com/getting-started) for more info :)
+
+</Content>
